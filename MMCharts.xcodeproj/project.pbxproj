@@ -19,6 +19,10 @@
 		48A5EA1122DA589E0007B70D /* DataToPintsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48A5EA1022DA589E0007B70D /* DataToPintsTests.swift */; };
 		48A5EA1322DA72C40007B70D /* MultiplierForAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48A5EA1222DA72C40007B70D /* MultiplierForAnimation.swift */; };
 		48A5EA1522DA735C0007B70D /* MultiplierForAnimationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48A5EA1422DA735C0007B70D /* MultiplierForAnimationTests.swift */; };
+		48A5EA1922DB795B0007B70D /* GridLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48A5EA1822DB795B0007B70D /* GridLayer.swift */; };
+		48A5EA1B22DB79CF0007B70D /* GraphPathLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48A5EA1A22DB79CF0007B70D /* GraphPathLayer.swift */; };
+		48A5EA1D22DB94490007B70D /* AxisGraphLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48A5EA1C22DB94490007B70D /* AxisGraphLayer.swift */; };
+		48A5EA1F22DBA82A0007B70D /* UnderGraphLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48A5EA1E22DBA82A0007B70D /* UnderGraphLayer.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -48,6 +52,10 @@
 		48A5EA1022DA589E0007B70D /* DataToPintsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataToPintsTests.swift; sourceTree = "<group>"; };
 		48A5EA1222DA72C40007B70D /* MultiplierForAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiplierForAnimation.swift; sourceTree = "<group>"; };
 		48A5EA1422DA735C0007B70D /* MultiplierForAnimationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiplierForAnimationTests.swift; sourceTree = "<group>"; };
+		48A5EA1822DB795B0007B70D /* GridLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GridLayer.swift; sourceTree = "<group>"; };
+		48A5EA1A22DB79CF0007B70D /* GraphPathLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphPathLayer.swift; sourceTree = "<group>"; };
+		48A5EA1C22DB94490007B70D /* AxisGraphLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AxisGraphLayer.swift; sourceTree = "<group>"; };
+		48A5EA1E22DBA82A0007B70D /* UnderGraphLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnderGraphLayer.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -89,17 +97,14 @@
 		482A3F5C22B6CF4E002A0ACB /* MMCharts */ = {
 			isa = PBXGroup;
 			children = (
+				48A5EA1722DB79340007B70D /* Helpers */,
+				48A5EA1622DB790C0007B70D /* Layers */,
 				482A3F5D22B6CF4E002A0ACB /* AppDelegate.swift */,
 				482A3F5F22B6CF4E002A0ACB /* ViewController.swift */,
 				482A3F6422B6CF52002A0ACB /* Assets.xcassets */,
 				482A3F6622B6CF52002A0ACB /* LaunchScreen.storyboard */,
 				482A3F6922B6CF52002A0ACB /* Info.plist */,
-				482A3F7D22B6D1F0002A0ACB /* GraphLayerProtocol.swift */,
-				482A3F7F22B6D23D002A0ACB /* GraphLayer.swift */,
-				482A3F8122B6D489002A0ACB /* LineGraphLayer.swift */,
 				482A3F8322B6D990002A0ACB /* UIBezierPath+Extensions.swift */,
-				48A5EA0E22DA54B60007B70D /* DataToPoints.swift */,
-				48A5EA1222DA72C40007B70D /* MultiplierForAnimation.swift */,
 			);
 			path = MMCharts;
 			sourceTree = "<group>";
@@ -112,6 +117,29 @@
 				48A5EA1422DA735C0007B70D /* MultiplierForAnimationTests.swift */,
 			);
 			path = MMChartsTests;
+			sourceTree = "<group>";
+		};
+		48A5EA1622DB790C0007B70D /* Layers */ = {
+			isa = PBXGroup;
+			children = (
+				482A3F7F22B6D23D002A0ACB /* GraphLayer.swift */,
+				482A3F7D22B6D1F0002A0ACB /* GraphLayerProtocol.swift */,
+				482A3F8122B6D489002A0ACB /* LineGraphLayer.swift */,
+				48A5EA1822DB795B0007B70D /* GridLayer.swift */,
+				48A5EA1A22DB79CF0007B70D /* GraphPathLayer.swift */,
+				48A5EA1C22DB94490007B70D /* AxisGraphLayer.swift */,
+				48A5EA1E22DBA82A0007B70D /* UnderGraphLayer.swift */,
+			);
+			path = Layers;
+			sourceTree = "<group>";
+		};
+		48A5EA1722DB79340007B70D /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				48A5EA0E22DA54B60007B70D /* DataToPoints.swift */,
+				48A5EA1222DA72C40007B70D /* MultiplierForAnimation.swift */,
+			);
+			path = Helpers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -216,12 +244,16 @@
 			buildActionMask = 2147483647;
 			files = (
 				482A3F6022B6CF4E002A0ACB /* ViewController.swift in Sources */,
+				48A5EA1B22DB79CF0007B70D /* GraphPathLayer.swift in Sources */,
 				48A5EA0F22DA54B60007B70D /* DataToPoints.swift in Sources */,
 				482A3F7E22B6D1F0002A0ACB /* GraphLayerProtocol.swift in Sources */,
 				482A3F8022B6D23D002A0ACB /* GraphLayer.swift in Sources */,
+				48A5EA1922DB795B0007B70D /* GridLayer.swift in Sources */,
 				482A3F8422B6D990002A0ACB /* UIBezierPath+Extensions.swift in Sources */,
 				48A5EA1322DA72C40007B70D /* MultiplierForAnimation.swift in Sources */,
 				482A3F5E22B6CF4E002A0ACB /* AppDelegate.swift in Sources */,
+				48A5EA1F22DBA82A0007B70D /* UnderGraphLayer.swift in Sources */,
+				48A5EA1D22DB94490007B70D /* AxisGraphLayer.swift in Sources */,
 				482A3F8222B6D489002A0ACB /* LineGraphLayer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

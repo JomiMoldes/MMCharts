@@ -11,8 +11,20 @@ import CoreGraphics
 
 class MultiplierForAnimation {
     
-    func multiply(from:[(CGFloat,CGFloat)], to: [(CGFloat,CGFloat)]) -> [[(CGFloat,CGFloat)]] {
+    
+    func multiply(from:[(CGFloat,CGFloat)], to: [(CGFloat,CGFloat)], times:Int = 1) -> [[(CGFloat,CGFloat)]] {
         var finalElements: [[(CGFloat,CGFloat)]] = [from]
+        
+        for i in 1...times {
+            let list = self.getList(times: times, currentDivider: i, from: from, to: to)
+            finalElements.append(list)
+        }
+        
+        finalElements.append(to)
+        return finalElements
+    }
+    
+    private func getList(times: Int, currentDivider: Int, from:[(CGFloat,CGFloat)], to: [(CGFloat,CGFloat)]) -> [(CGFloat, CGFloat)] {
         var secondList = [(CGFloat, CGFloat)]()
         
         var fromPosition:Int = 0
@@ -33,13 +45,13 @@ class MultiplierForAnimation {
             let previousItem = self.getPreviousItem(to: to, value: firstPoint.0)
             
             if previousItem.0 == firstPoint.0 {
-                secondList.append(convertPoint(from: firstPoint, to: previousItem))
+                secondList.append(convertPoint(from: firstPoint, to: previousItem, times: times, currentDivider: currentDivider))
                 toPosition += 1
                 continue
             }
             
             if let nextItem = self.getNextItem(to: to, value: firstPoint.0) {
-                secondList.append(convertPoint(previous: previousItem, next: nextItem, to: firstPoint))
+                secondList.append(convertPoint(previous: previousItem, next: nextItem, to: firstPoint, times: times, currentDivider: currentDivider))
                 continue
             }
             secondList.append(firstPoint)
@@ -48,11 +60,7 @@ class MultiplierForAnimation {
         for _ in toPosition..<to.count {
             secondList.append(to[toPosition])
         }
-        
-        
-        finalElements.append(secondList)
-        finalElements.append(to)
-        return finalElements
+        return secondList
     }
     
     private func getFirstElement(from:[(CGFloat,CGFloat)], to: [(CGFloat,CGFloat)], fromPosition: Int, toPosition:Int) -> ((CGFloat, CGFloat), Bool) {
@@ -88,22 +96,40 @@ class MultiplierForAnimation {
         return nil
     }
     
-    private func convertPoint(from: (CGFloat, CGFloat), to: (CGFloat, CGFloat)) -> (CGFloat, CGFloat) {
-        return (from.0, (from.1 + to.1) / 2)
+    private func convertPoint(from: (CGFloat, CGFloat), to: (CGFloat, CGFloat), times:Int, currentDivider: Int) -> (CGFloat, CGFloat) {
+        let distance = from.1 > to.1 ? from.1 - to.1 : to.1 - from.1
+        let splitted = distance / (CGFloat(times) + 1.0) * CGFloat(currentDivider)
+        let finalY = from.1 > to.1 ? from.1 - splitted : from.1 + splitted
+        return (from.0, finalY)
+//        return (from.0, ((from.1 + to.1) / CGFloat(times)) * CGFloat(index))
     }
     
-    private func convertPoint(previous: (CGFloat, CGFloat), next: (CGFloat, CGFloat), to: (CGFloat, CGFloat)) -> (CGFloat, CGFloat) {
+    private func convertPoint(previous: (CGFloat, CGFloat), next: (CGFloat, CGFloat), to: (CGFloat, CGFloat), times:Int, currentDivider: Int) -> (CGFloat, CGFloat) {
         let xDistance = next.0 - previous.0
         if previous.1 > next.1 {
             let yDistance = previous.1 - next.1
             let xDistanceBetweenCurrentAndPreviousOne = to.0 - previous.0
             let yTarget = previous.1 - (xDistanceBetweenCurrentAndPreviousOne * (yDistance / xDistance))
-            return (to.0, yTarget)
+            let distanceToYTarget: CGFloat = abs(to.1 - yTarget)
+            let ySplitted = distanceToYTarget / (CGFloat(times) + 1.0) * CGFloat(currentDivider)
+            let finalY = to.1 > yTarget ? to.1 - ySplitted : to.1 + ySplitted
+            return (to.0, finalY)
         }
+        
         let yDistance = next.1 - previous.1
         let xDistanceBetweenCurrentAndPreviousOne = to.0 - previous.0
         let yTarget = previous.1 + (xDistanceBetweenCurrentAndPreviousOne * (yDistance / xDistance))
-        return (to.0, yTarget)
+        let distanceToYTarget: CGFloat = abs(to.1 - yTarget)
+        let ySplitted = distanceToYTarget / (CGFloat(times) + 1.0) * CGFloat(currentDivider)
+        let finalY = to.1 > yTarget ? to.1 - ySplitted : to.1 + ySplitted
+        return (to.0, finalY)
+        
+        
+        
+//        let yDistance = next.1 - previous.1
+//        let xDistanceBetweenCurrentAndPreviousOne = to.0 - previous.0
+//        let yTarget = previous.1 + (xDistanceBetweenCurrentAndPreviousOne * (yDistance / xDistance))
+//        return (to.0, yTarget)
     }
     
 }

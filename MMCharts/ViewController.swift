@@ -11,14 +11,18 @@ import UIKit
 class ViewController: UIViewController {
 
     let chartView = UIView()
+    private var lineLayer: LineGraphLayer!
+    private var gridLayer: GridLayer!
+    private var axisLayer: AxisGraphLayer!
+    private var underLayer: UnderGraphLayer!
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
 
         self.view.addSubview(chartView)
         
-        //let rect: CGRect = CGRect(x: 0.0, y: 0.0, width: 400.0, height: 150.0)
+        self.view.backgroundColor = UIColor.white
         
         chartView.translatesAutoresizingMaskIntoConstraints = false
         
@@ -42,34 +46,57 @@ class ViewController: UIViewController {
     private func reDrawGraphic() {
         index = index == 0 ? 1 : 0
         
+        self.gridLayer?.clean()
+        let graphInsets = UIEdgeInsets(top: 20.0, left: 40.0, bottom: 20.0, right: 40.0)
+        self.gridLayer = GridLayer(margins: graphInsets, gridColor: UIColor.red.withAlphaComponent(0.4))
+        self.chartView.layer.addSublayer(self.gridLayer.layer)
+        self.gridLayer.drawLayer(rect: self.chartView.bounds)
+        
+        
+        self.axisLayer?.clean()
+        self.axisLayer = AxisGraphLayer(margins: graphInsets)
+        self.chartView.layer.addSublayer(self.axisLayer.layer)
+        self.axisLayer.drawLayer(rect: self.chartView.bounds)
+        
         let multiplier = MultiplierForAnimation()
-        let lists = multiplier.multiply(from: ViewController.lists[index], to: ViewController.lists[index == 0 ? 1 : 0])
+        let lists = multiplier.multiply(from: ViewController.lists[index], to: ViewController.lists[index == 0 ? 1 : 0], times: 10)
+        
+        let frameWithMargins = self.chartView.bounds.inset(by: graphInsets)
+        
+        let graphInsets2 = UIEdgeInsets(top: 10.0, left: 20.0, bottom: 30.0, right: 60.0)
+        let frameWithMargins2 = self.chartView.bounds.inset(by: graphInsets2)
         
         var delay = 0.0
-        for i in 0..<3 {
+        for i in 0..<12 {
             let list = lists[i]
             DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
-                print(Date().timeIntervalSince1970)
+                let points = self.getPoints(rect: frameWithMargins, list: list)
                 self.lineLayer?.clean()
                 self.lineLayer = LineGraphLayer()
                 self.lineLayer.clean()
-                self.lineLayer.points = self.getPoints(rect: self.chartView.frame, list: list)
+                self.lineLayer.points = points
                 self.chartView.layer.addSublayer(self.lineLayer.layer)
-                self.lineLayer.drawLayer(rect: self.view.bounds)
+                self.lineLayer.drawLayer(rect: frameWithMargins)
+                
+                self.underLayer?.clean()
+                self.underLayer = UnderGraphLayer()
+                self.underLayer?.clean()
+                self.underLayer.points = points
+                self.chartView.layer.addSublayer(self.underLayer.layer)
+                self.underLayer.drawLayer(rect: frameWithMargins2)
             }
-            delay += 0.3
+            delay += 0.025
         }
         
         
     }
-    
-    private var lineLayer: LineGraphLayer!
+
     override func viewDidLayoutSubviews() {
         self.reDrawGraphic()
     }
     
     private func getPoints(rect: CGRect, list: [(CGFloat, CGFloat)]) -> [CGPoint] {
-        let dataToPoints = DataToPoints(xMin: 1.0, xMax: 31.0, yMin: 0.0, yMax: 120.0, margins: UIEdgeInsets(top: 10.0, left: 10.0, bottom: 10.0, right: 10.0))
+        let dataToPoints = DataToPoints(xMin: 1.0, xMax: 31.0, yMin: 0.0, yMax: 120.0)
         
         return dataToPoints.calculatePositions(list: list, rect: rect)
     }
@@ -106,7 +133,12 @@ class ViewController: UIViewController {
         (6.0,34.0),
         (9.0,74.0),
         (13.0,48.0),
-        (17.0,49.0)
+        (17.0,49.0),
+        (20, 80.5),
+        (23.0,94.0),
+        (27.0,54.0),
+        (30.0, 81.0),
+        (31.0,120.0)
     ]
 }
 
