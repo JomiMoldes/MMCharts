@@ -24,7 +24,7 @@ class GraphLayer: GraphLayerProtocol {
         self.cleanLayer(layer: self.layer)
     }
     
-    private func cleanLayer(layer:CALayer) {
+    func cleanLayer(layer:CALayer) {
         guard let layers = layer.sublayers else {
             (layer as? CAShapeLayer)?.path = nil
             layer.mask = nil

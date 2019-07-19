@@ -45,11 +45,12 @@ class UnderGraphLayer: GraphLayer {
         guard points.count > 1 else {
             return
         }
-        self.createGradientLayer(rect: rect)
+        
         
         //        self.maskLayerByZone()
         
         self.layer.backgroundColor = UIColor.clear.cgColor
+        self.createGradientLayer(rect: rect)
 //        animate()
     }
     
@@ -143,7 +144,24 @@ class UnderGraphLayer: GraphLayer {
     
     override func clean() {
         super.clean()
-//        self.cleanLayer(layer: self.layer)
+        self.doClean(layer: self.maskLayer)
+        self.doClean(layer: self.gradient)
+        self.pathMask.removeAllPoints()
+    }
+    
+    private func doClean(layer:CALayer) {
+        guard let layers = layer.sublayers else {
+            (layer as? CAShapeLayer)?.path = nil
+            layer.mask = nil
+            return
+        }
+        layers.forEach {
+            let layer = $0
+            (layer as? CAShapeLayer)?.path = nil
+            layer.mask = nil
+            self.cleanLayer(layer: layer)
+            layer.removeFromSuperlayer()
+        }
     }
 }
 
