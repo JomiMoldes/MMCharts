@@ -10,27 +10,37 @@ import Foundation
 import QuartzCore
 import UIKit
 
-class GridLayer : GraphLayer {
+class GraphGridLayer : GraphLayer {
     
     let margins: UIEdgeInsets
     let gridHorizontalLines: Int
     let gridColor: UIColor
     let axisExtension: CGFloat
     let gridLinesWidth: CGFloat
+    private let withVerticalLines: Bool
+    private let lineDashPattern: [NSNumber]?
     
-    init(margins: UIEdgeInsets, gridHorizontalLines:Int = 5, gridColor: UIColor = UIColor(red: 164/255, green: 164/255, blue: 164/255, alpha: 0.6), axisExtension:CGFloat = 10.0, gridLinesWidth:CGFloat = 0.5) {
+    init(margins: UIEdgeInsets,
+         gridHorizontalLines:Int = 6,
+         gridColor: UIColor = UIColor(red: 164/255, green: 164/255, blue: 164/255, alpha: 0.6),
+         axisExtension:CGFloat = 0.0,
+         gridLinesWidth:CGFloat = 1.0,
+         withVerticalLines: Bool = true,
+         lineDashPattern: [NSNumber]? = nil
+        ) {
         self.margins = margins
         self.gridHorizontalLines = gridHorizontalLines
         self.gridColor = gridColor
         self.axisExtension = axisExtension
         self.gridLinesWidth = gridLinesWidth
+        self.withVerticalLines = withVerticalLines
+        self.lineDashPattern = lineDashPattern
         super.init()
     }
     
     override func drawLayer(rect: CGRect) {
         super.drawLayer(rect: rect)
         drawLines(rect: rect)
-        animate()
     }
     
     private func drawLines(rect: CGRect) {
@@ -54,12 +64,15 @@ class GridLayer : GraphLayer {
         
         currentX = self.margins.left + gridWidth
         
-        for _ in 0..<gridVerticalLines {
-            path.move(to: CGPoint(x:currentX,y:currentY))
-            path.addLine(to: CGPoint(x: currentX, y: finalYPos))
-            currentX += gridWidth
+        if self.withVerticalLines {
+            for _ in 0..<gridVerticalLines {
+                path.move(to: CGPoint(x:currentX,y:currentY))
+                path.addLine(to: CGPoint(x: currentX, y: finalYPos))
+                currentX += gridWidth
+            }
         }
         
+        self.layer.lineDashPattern = self.lineDashPattern
         self.layer.lineWidth = self.gridLinesWidth
         self.layer.strokeColor = self.gridColor.cgColor
         self.layer.path = path.cgPath

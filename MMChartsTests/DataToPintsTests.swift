@@ -14,13 +14,13 @@ import XCTest
 class DataToPointsTests: XCTestCase {
     
     func testDataToPoints() {
-        let xMin:CGFloat = 1.0
-        let xMax:CGFloat = 31.0
-        let yMin:CGFloat = 0.0
-        let yMax:CGFloat = 120.0
+        let minX:CGFloat = 1.0
+        let maxX:CGFloat = 31.0
+        let minY:CGFloat = 0.0
+        let maxY:CGFloat = 120.0
+        let extremeValues = GraphHelperExtremeValues(minX: minX, maxX: maxX, minY: minY, maxY: maxY)
         
-        let insets = UIEdgeInsets(top: 10.0, left: 10.0, bottom: 10.0, right: 10.0)
-        let sut = DataToPoints(xMin: xMin, xMax: xMax, yMin: yMin, yMax: yMax, margins: insets)
+        let sut = DataToPoints(extremeValues: extremeValues)
         
         let list:[(CGFloat,CGFloat)] = [
             (1.0,10.0),
@@ -30,18 +30,17 @@ class DataToPointsTests: XCTestCase {
             (31.0,120.0)
         ]
         
-        
         var rectHeight: CGFloat = 140.0
         var rectWidth: CGFloat = 120.0
         var rect = CGRect(x: 0.0, y: 0.0, width: rectWidth, height: rectHeight)
         var points = sut.calculatePositions(list: list, rect: rect)
         
         func finalYPos(value: CGFloat) -> CGFloat {
-            return ((rectHeight - insets.top - insets.bottom) / (yMax - yMin)) * (yMax - value) + insets.top
+            return (rectHeight / (maxY - minY)) * (maxY - value)
         }
         
         func finalXPos(value: CGFloat) -> CGFloat {
-            return ((rectWidth - insets.left - insets.right) / (xMax - xMin)) * (value - xMin) + insets.left
+            return (rectWidth / (maxX - minX)) * (value - minX)
         }
         
         XCTAssertEqual(points, list.compactMap { CGPoint(x: finalXPos(value: $0.0), y: finalYPos(value: $0.1))})

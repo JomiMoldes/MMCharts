@@ -10,17 +10,20 @@ import Foundation
 import UIKit
 import QuartzCore
 
-class LineGraphLayer: GraphLayer {
+class GraphCurvesLayer: GraphLayer {
+    
+    static let identifier: String = "curve"
     
     private let color: UIColor
+    private let linePathWidth: CGFloat
     
     var points = [CGPoint]()
-    var linePathWidth: CGFloat
     
-    init(color: UIColor = UIColor.blue, linePathWidth: CGFloat = 1.0) {
+    init(color: UIColor = UIColor.blue, linePathWidth: CGFloat = 3.0) {
         self.color = color
         self.linePathWidth = linePathWidth
         super.init()
+        self.layer.name = GraphCurvesLayer.identifier
     }
     
     override func drawLayer(rect:CGRect) {
@@ -28,7 +31,6 @@ class LineGraphLayer: GraphLayer {
         guard self.points.count > 0 else {
             return 
         }
-        //layer.isHidden = true
         self.layer.backgroundColor = UIColor.clear.cgColor
         self.layer.fillColor = UIColor.clear.cgColor
         
@@ -40,12 +42,6 @@ class LineGraphLayer: GraphLayer {
         self.layer.path = self.path.cgPath
         
         layer.lineCap = CAShapeLayerLineCap.round
-        
-        // for a short moment it shows the original fill color. Workaround:
-//        delayWithSeconds(0.5, completion: {
-//            self.layer.isHidden = false
-//            //            self.animate()
-//        })
     }
     
 }

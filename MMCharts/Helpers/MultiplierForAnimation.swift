@@ -11,7 +11,6 @@ import CoreGraphics
 
 class MultiplierForAnimation {
     
-    
     func multiply(from:[(CGFloat,CGFloat)], to: [(CGFloat,CGFloat)], times:Int = 1) -> [[(CGFloat,CGFloat)]] {
         var finalElements: [[(CGFloat,CGFloat)]] = [from]
         
@@ -101,7 +100,6 @@ class MultiplierForAnimation {
         let splitted = distance / (CGFloat(times) + 1.0) * CGFloat(currentDivider)
         let finalY = from.1 > to.1 ? from.1 - splitted : from.1 + splitted
         return (from.0, finalY)
-//        return (from.0, ((from.1 + to.1) / CGFloat(times)) * CGFloat(index))
     }
     
     private func convertPoint(previous: (CGFloat, CGFloat), next: (CGFloat, CGFloat), to: (CGFloat, CGFloat), times:Int, currentDivider: Int) -> (CGFloat, CGFloat) {
@@ -123,13 +121,6 @@ class MultiplierForAnimation {
         let ySplitted = distanceToYTarget / (CGFloat(times) + 1.0) * CGFloat(currentDivider)
         let finalY = to.1 > yTarget ? to.1 - ySplitted : to.1 + ySplitted
         return (to.0, finalY)
-        
-        
-        
-//        let yDistance = next.1 - previous.1
-//        let xDistanceBetweenCurrentAndPreviousOne = to.0 - previous.0
-//        let yTarget = previous.1 + (xDistanceBetweenCurrentAndPreviousOne * (yDistance / xDistance))
-//        return (to.0, yTarget)
     }
     
 }

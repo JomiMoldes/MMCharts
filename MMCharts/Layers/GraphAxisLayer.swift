@@ -16,21 +16,35 @@ class AxisGraphLayer : GraphLayer {
     private let axisColor: UIColor
     private let axisExtension: CGFloat
     private let axisLineWidth: CGFloat
+    private let withHorizontalAxis: Bool
+    private let withVerticalAxis: Bool
+    private let lineDashPattern: [NSNumber]?
     
-    
-    init(margins: UIEdgeInsets, axisColor: UIColor = UIColor.red, axisExtension: CGFloat = 5.0, axisLineWidth: CGFloat = 1.0) {
+    init(margins: UIEdgeInsets,
+         axisColor: UIColor = UIColor.red,
+         axisExtension: CGFloat = 0.0,
+         axisLineWidth: CGFloat = 1.0,
+         withHorizontalAxis: Bool = true,
+         withVerticalAxis: Bool = true,
+         lineDashPattern: [NSNumber]? = nil) {
         self.margins = margins
         self.axisColor = axisColor
         self.axisExtension = axisExtension
         self.axisLineWidth = axisLineWidth
+        self.withVerticalAxis = withVerticalAxis
+        self.withHorizontalAxis = withHorizontalAxis
+        self.lineDashPattern = lineDashPattern
         super.init()
     }
     
     override func drawLayer(rect: CGRect) {
         super.drawLayer(rect: rect)
-        drawYAxis(rect: rect)
-        drawXAxis(rect: rect)
-        animate()
+        if self.withVerticalAxis {
+            self.drawYAxis(rect: rect)
+        }
+        if self.withHorizontalAxis {
+            self.drawXAxis(rect: rect)
+        }
     }
     
     private func drawYAxis(rect: CGRect) {
@@ -38,6 +52,7 @@ class AxisGraphLayer : GraphLayer {
                              y:self.margins.top))
         path.addLine(to:CGPoint(x:self.margins.left,
                                 y:rect.height - self.margins.bottom + self.axisExtension))
+        self.layer.lineDashPattern = self.lineDashPattern
         self.layer.lineWidth = self.axisLineWidth
         self.layer.strokeColor = self.axisColor.cgColor
         self.layer.path = path.cgPath
@@ -48,6 +63,7 @@ class AxisGraphLayer : GraphLayer {
                              y:rect.height - self.margins.bottom))
         path.addLine(to:CGPoint(x:rect.width - self.margins.right,
                                 y:rect.height - self.margins.bottom))
+        self.layer.lineDashPattern = self.lineDashPattern
         self.layer.lineWidth = self.axisLineWidth
         self.layer.strokeColor = self.axisColor.cgColor
         self.layer.path = path.cgPath

@@ -17,11 +17,11 @@ class DataToPoints {
     private let yMin: CGFloat
     private let yMax: CGFloat
     
-    init(xMin: CGFloat, xMax: CGFloat, yMin: CGFloat, yMax: CGFloat) {
-        self.xMin = xMin
-        self.xMax = xMax
-        self.yMin = yMin
-        self.yMax = yMax
+    init(extremeValues: GraphHelperExtremeValues) {
+        self.xMin = extremeValues.minX
+        self.xMax = extremeValues.maxX
+        self.yMin = extremeValues.minY
+        self.yMax = extremeValues.maxY
     }
     
     func calculatePositions(list:[(CGFloat,CGFloat)], rect: CGRect) -> [CGPoint] {
